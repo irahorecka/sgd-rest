@@ -1,3 +1,8 @@
+"""
+sgd/constants
+~~~~~~~~~~~~~
+"""
+
 import json
 from pathlib import Path
 

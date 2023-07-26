@@ -20,7 +20,8 @@ publish: ## Publish package distribution files to pypi
 	flit publish;
 	make clean;
 
-clean: ## Remove package distribution files and pycache
+clean: ## Remove package distributions, caches, and junk files
 	rm -rf ./pycraigslist.egg-info ./dist ./build;
 	find . -type d -name "__pycache__" | xargs rm -r;
 	find . -type d -name ".pytest_cache" | xargs rm -r;
+	find . -type f -name ".DS_Store" | xargs rm;

@@ -8,18 +8,18 @@ from functools import lru_cache
 
 import requests
 
-from sgd.constants import genes_to_loci
+from sgd.constants import GENES_TO_LOCI
 from sgd.exceptions import InvalidGene
 
 
 class BaseAPI:
-    _base_endpoint = ""
-    _id = ""
+    base_endpoint = ""
+    id = ""
 
     def __init__(self, **kwargs):
         self._kwargs = kwargs
 
-    @lru_cache(maxsize=128)
+    @lru_cache(maxsize=64)
     def get_endpoint_response(self, addl_endpoint=None):
         """Gets response for an endpoint.
 
@@ -29,18 +29,18 @@ class BaseAPI:
         Returns:
             requests.models.Response: Endpoint response.
         """
-        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, addl_endpoint)))
+        endpoint = "/".join(filter(lambda x: x, (self.base_endpoint, self.id, addl_endpoint)))
         url = f"https://www.yeastgenome.org/backend/{endpoint}"
-        r = requests.get(url, **self._kwargs)
-        r.raise_for_status()
-        return r
+        response = requests.get(url, **self._kwargs)
+        response.raise_for_status()
+        return response
 
 
 class locus(BaseAPI):
     def __init__(self, locus_id, **kwargs):
         super().__init__(**kwargs)
-        self.locus_id = self._id = locus_id.upper()
-        self._base_endpoint = self.__class__.__name__
+        self.locus_id = self.id = locus_id.upper()
+        self.base_endpoint = self.__class__.__name__
 
     @property
     def details(self):
@@ -49,7 +49,6 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus details.
         """
-        # Pair base URL endpoint with locus ID
         return self.get_endpoint_response()
 
     @property
@@ -59,7 +58,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus GO details.
         """
-        # Pair base URL endpoint with locus ID and terminal endpoint (i.e., this method's name)
+        # `inspect.currentframe().f_code.co_name` gets this method's name (i.e., 'go_details')
         return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
@@ -145,12 +144,13 @@ class locus(BaseAPI):
 
 
 class gene(locus):
-    def __init__(self, gene, **kwargs):
-        super().__init__(self._get_locus_id_from_gene(gene, **kwargs))
-        self._base_endpoint = self.__class__.__base__.__name__
+    def __init__(self, gene_name, **kwargs):
+        super().__init__(self._get_locus_id_from_gene_name(gene_name), **kwargs)
+        self.gene_name = gene_name
+        self.base_endpoint = self.__class__.__base__.__name__
 
     @staticmethod
-    def _get_locus_id_from_gene(gene):
+    def _get_locus_id_from_gene_name(gene_name):
         """Gets locus ID for gene.
 
         Args:
@@ -163,16 +163,16 @@ class gene(locus):
             str: Locus ID for gene.
         """
         try:
-            return genes_to_loci[gene.upper()]
+            return GENES_TO_LOCI[gene_name.upper()]
         except KeyError as e:
-            raise InvalidGene(f"Could not find gene with name '{gene}'.") from e
+            raise InvalidGene(f"Could not find gene with name '{gene_name}'.") from e
 
 
 class phenotype(BaseAPI):
     def __init__(self, phenotype_name, **kwargs):
         super().__init__(**kwargs)
-        self.phenotype_name = self._id = phenotype_name
-        self._base_endpoint = self.__class__.__name__
+        self.phenotype_name = self.id = phenotype_name
+        self.base_endpoint = self.__class__.__name__
 
     @property
     def details(self):
@@ -197,8 +197,8 @@ class go(BaseAPI):
     def __init__(self, go_id, **kwargs):
         super().__init__(**kwargs)
         # Convert simple numeric ID to GO ID if needed
-        self.go_id = self._id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
-        self._base_endpoint = self.__class__.__name__
+        self.go_id = self.id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
+        self.base_endpoint = self.__class__.__name__
 
     @property
     def details(self):

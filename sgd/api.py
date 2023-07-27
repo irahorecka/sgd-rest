@@ -20,8 +20,11 @@ class BaseAPI:
         self._kwargs = kwargs
 
     @lru_cache(maxsize=128)
-    def get_response_for_endpoint(self, addl_endpoint=None):
+    def get_endpoint_response(self, addl_endpoint=None):
         """Gets response for an endpoint.
+
+        Args:
+            addl_endpoint (str | None, optional): Additional endpoint to append to URL.
 
         Returns:
             requests.models.Response: Endpoint response.
@@ -48,7 +51,7 @@ class locus(BaseAPI):
             requests.models.Response: Locus details.
         """
         # Pair base URL endpoint with locus ID
-        return self.get_response_for_endpoint()
+        return self.get_endpoint_response()
 
     @property
     def go_details(self):
@@ -58,7 +61,7 @@ class locus(BaseAPI):
             requests.models.Response: Locus GO details.
         """
         # Pair base URL endpoint with locus ID and terminal endpoint (i.e., this method's name)
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def interaction_details(self):
@@ -67,7 +70,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus interaction details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def literature_details(self):
@@ -76,7 +79,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus literature details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def neighbor_sequence_details(self):
@@ -85,7 +88,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus neighbor sequence details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def phenotype_details(self):
@@ -94,7 +97,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus phenotype details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def posttranslational_details(self):
@@ -103,7 +106,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus posttranslational details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def protein_domain_details(self):
@@ -112,7 +115,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein domain details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def protein_experiment_details(self):
@@ -121,7 +124,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein experiment details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def regulation_details(self):
@@ -130,7 +133,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus regulation details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def sequence_details(self):
@@ -139,7 +142,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus sequence details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
 
 class gene(locus):
@@ -179,7 +182,7 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype details.
         """
-        return self.get_response_for_endpoint()
+        return self.get_endpoint_response()
 
     @property
     def locus_details(self):
@@ -188,7 +191,7 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype locus details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
 
 
 class go(BaseAPI):
@@ -205,7 +208,7 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO details.
         """
-        return self.get_response_for_endpoint()
+        return self.get_endpoint_response()
 
     @property
     def locus_details(self):
@@ -214,4 +217,4 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO locus details.
         """
-        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)

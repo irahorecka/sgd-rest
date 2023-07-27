@@ -40,7 +40,6 @@ class locus(BaseAPI):
     def __init__(self, locus_id, **kwargs):
         super().__init__(**kwargs)
         self.locus_id = self._id = locus_id.upper()
-        self._kwargs = kwargs
         self._base_endpoint = self.__class__.__name__
 
     @property

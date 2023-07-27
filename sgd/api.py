@@ -13,31 +13,30 @@ from sgd.exceptions import InvalidGene
 
 
 class BaseAPI:
-    endpoint = ""
+    _base_endpoint = ""
+    _id = ""
 
-    def __init__(self):
-        pass
-
-    @property
-    def url(self):
-        return f"https://www.yeastgenome.org/backend/{self.endpoint}"
+    def __init__(self, **kwargs):
+        self._kwargs = kwargs
 
     @lru_cache(maxsize=128)
-    def get_response(self, **kwargs):
-        """Gets response for instance URL.
+    def get_response_for_endpoint(self, addl_endpoint=None):
+        """Gets response for an endpoint.
 
         Returns:
-            requests.models.Response: Instance URL response.
+            requests.models.Response: Endpoint response.
         """
-        r = requests.get(self.url, **kwargs)
+        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, addl_endpoint)))
+        url = f"https://www.yeastgenome.org/backend/{endpoint}"
+        r = requests.get(url, **self._kwargs)
         r.raise_for_status()
         return r
 
 
 class locus(BaseAPI):
     def __init__(self, locus_id, **kwargs):
-        super().__init__()
-        self.locus_id = locus_id.upper()
+        super().__init__(**kwargs)
+        self.locus_id = self._id = locus_id.upper()
         self._kwargs = kwargs
         self._base_endpoint = self.__class__.__name__
 
@@ -49,8 +48,7 @@ class locus(BaseAPI):
             requests.models.Response: Locus details.
         """
         # Pair base URL endpoint with locus ID
-        self.endpoint = f"{self._base_endpoint}/{self.locus_id}"
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint()
 
     @property
     def go_details(self):
@@ -60,10 +58,7 @@ class locus(BaseAPI):
             requests.models.Response: Locus GO details.
         """
         # Pair base URL endpoint with locus ID and terminal endpoint (i.e., this method's name)
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def interaction_details(self):
@@ -72,10 +67,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus interaction details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def literature_details(self):
@@ -84,10 +76,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus literature details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def neighbor_sequence_details(self):
@@ -96,10 +85,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus neighbor sequence details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def phenotype_details(self):
@@ -108,10 +94,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus phenotype details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def posttranslational_details(self):
@@ -120,10 +103,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus posttranslational details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def protein_domain_details(self):
@@ -132,10 +112,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein domain details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def protein_experiment_details(self):
@@ -144,10 +121,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein experiment details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def regulation_details(self):
@@ -156,10 +130,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus regulation details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
     @property
     def sequence_details(self):
@@ -168,16 +139,13 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus sequence details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.locus_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
 
 class gene(locus):
     def __init__(self, gene, **kwargs):
         super().__init__(self._get_locus_id_from_gene(gene, **kwargs))
-        self._base_endpoint = locus.__name__
+        self._base_endpoint = self.__class__.__base__.__name__
 
     @staticmethod
     def _get_locus_id_from_gene(gene):
@@ -200,9 +168,8 @@ class gene(locus):
 
 class phenotype(BaseAPI):
     def __init__(self, phenotype_name, **kwargs):
-        super().__init__()
-        self.phenotype_name = phenotype_name
-        self._kwargs = kwargs
+        super().__init__(**kwargs)
+        self.phenotype_name = self._id = phenotype_name
         self._base_endpoint = self.__class__.__name__
 
     @property
@@ -212,8 +179,7 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype details.
         """
-        self.endpoint = f"{self._base_endpoint}/{self.phenotype_name}"
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint()
 
     @property
     def locus_details(self):
@@ -222,18 +188,14 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype locus details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.phenotype_name}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)
 
 
 class go(BaseAPI):
     def __init__(self, go_id, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
         # Convert simple numeric ID to GO ID if needed
-        self.go_id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
-        self._kwargs = kwargs
+        self.go_id = self._id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
         self._base_endpoint = self.__class__.__name__
 
     @property
@@ -243,8 +205,7 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO details.
         """
-        self.endpoint = f"{self._base_endpoint}/{self.go_id}"
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint()
 
     @property
     def locus_details(self):
@@ -253,7 +214,4 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO locus details.
         """
-        self.endpoint = (
-            f"{self._base_endpoint}/{self.go_id}/{inspect.currentframe().f_code.co_name}"
-        )
-        return self.get_response(**self._kwargs)
+        return self.get_response_for_endpoint(addl_endpoint=inspect.currentframe().f_code.co_name)

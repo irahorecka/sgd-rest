@@ -13,6 +13,7 @@ from sgd.exceptions import InvalidGene
 
 class BaseAPI:
     """Base API for SGD REST."""
+
     _base_endpoint = ""
     _endpoint = ""
     endpoints = {}

@@ -3,7 +3,6 @@ sgd/api
 ~~~~~~~
 """
 
-import inspect
 from functools import lru_cache
 
 import requests
@@ -13,10 +12,11 @@ from sgd.exceptions import InvalidGene
 
 
 class BaseAPI:
-    base_endpoint = ""
-    id = ""
+    _base_endpoint = ""
+    endpoints = {}
 
-    def __init__(self, **kwargs):
+    def __init__(self, id, **kwargs):
+        self._id = id
         self._kwargs = kwargs
 
     @lru_cache(maxsize=64)
@@ -29,7 +29,7 @@ class BaseAPI:
         Returns:
             requests.models.Response: Endpoint response.
         """
-        endpoint = "/".join(filter(lambda x: x, (self.base_endpoint, self.id, addl_endpoint)))
+        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, addl_endpoint)))
         url = f"https://www.yeastgenome.org/backend/{endpoint}"
         response = requests.get(url, **self._kwargs)
         response.raise_for_status()
@@ -37,10 +37,26 @@ class BaseAPI:
 
 
 class locus(BaseAPI):
+    """SGD REST locus API."""
+
+    _base_endpoint = "locus"
+    endpoints = {
+        "details": "Gets basic information about a locus.",
+        "go_details": "Gets GO (gene ontology) annotations and the references used to make them.",
+        "interaction_details": "Gets interaction annotations and the references used to make them.",
+        "literature_details": "Gets references which refer to a gene, organized by subject of relevance.",
+        "neighbor_sequence_details": "Gets get sequences for neighboring loci in the strains for which they are available.",
+        "phenotype_details": "Gets phenotype annotations and the references used to make them.",
+        "posttranslational_details": "Gets posttranslational protein data.",
+        "protein_domain_details": "Gets protein domains, their sources, and their positions relative to protein sequence.",
+        "protein_experiment_details": "Gets metadata and data values for protein experiments.",
+        "regulation_details": "Gets regulation annotations and the references used to make them.",
+        "sequence_details": "Gets sequence for genomic, coding, protein, and +/- 1KB sequence.",
+    }
+
     def __init__(self, locus_id, **kwargs):
-        super().__init__(**kwargs)
-        self.locus_id = self.id = locus_id.upper()
-        self.base_endpoint = self.__class__.__name__
+        self.locus_id = locus_id.upper()
+        super().__init__(self.locus_id, **kwargs)
 
     @property
     def details(self):
@@ -58,8 +74,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus GO details.
         """
-        # `inspect.currentframe().f_code.co_name` gets this method's name (i.e., 'go_details')
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="go_details")
 
     @property
     def interaction_details(self):
@@ -68,7 +83,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus interaction details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="interaction_details")
 
     @property
     def literature_details(self):
@@ -77,7 +92,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus literature details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="literature_details")
 
     @property
     def neighbor_sequence_details(self):
@@ -86,7 +101,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus neighbor sequence details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="neighbor_sequence_details")
 
     @property
     def phenotype_details(self):
@@ -95,7 +110,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus phenotype details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="phenotype_details")
 
     @property
     def posttranslational_details(self):
@@ -104,7 +119,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus posttranslational details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="posttranslational_details")
 
     @property
     def protein_domain_details(self):
@@ -113,7 +128,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein domain details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="protein_domain_details")
 
     @property
     def protein_experiment_details(self):
@@ -122,7 +137,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein experiment details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="protein_experiment_details")
 
     @property
     def regulation_details(self):
@@ -131,7 +146,7 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus regulation details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="regulation_details")
 
     @property
     def sequence_details(self):
@@ -140,39 +155,33 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus sequence details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="sequence_details")
 
 
 class gene(locus):
+    """SGD REST locus API from gene name."""
+
+    # Class variables are inherited as-is from `locus`
     def __init__(self, gene_name, **kwargs):
-        super().__init__(self._get_locus_id_from_gene_name(gene_name), **kwargs)
-        self.gene_name = gene_name
-        self.base_endpoint = self.__class__.__base__.__name__
-
-    @staticmethod
-    def _get_locus_id_from_gene_name(gene_name):
-        """Gets locus ID for gene.
-
-        Args:
-            gene (str): Gene to convert to locus ID.
-
-        Raises:
-            InvalidGene: SGD does not recognize gene.
-
-        Returns:
-            str: Locus ID for gene.
-        """
+        self.gene_name = gene_name.upper()
         try:
-            return GENES_TO_LOCI[gene_name.upper()]
+            super().__init__(GENES_TO_LOCI[self.gene_name], **kwargs)
         except KeyError as e:
             raise InvalidGene(f"Could not find gene with name '{gene_name}'.") from e
 
 
 class phenotype(BaseAPI):
+    """SGD REST phenotype API."""
+
+    _base_endpoint = "phenotype"
+    endpoints = {
+        "details": "Gets basic information about a phenotype.",
+        "locus_details": "Gets a list of genes annotated to a phenotype with some information about the experiment and strain background.",
+    }
+
     def __init__(self, phenotype_name, **kwargs):
-        super().__init__(**kwargs)
-        self.phenotype_name = self.id = phenotype_name
-        self.base_endpoint = self.__class__.__name__
+        self.phenotype_name = phenotype_name
+        super().__init__(self.phenotype_name, **kwargs)
 
     @property
     def details(self):
@@ -190,15 +199,22 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype locus details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="locus_details")
 
 
 class go(BaseAPI):
+    """SGD REST GO (gene ontology) API."""
+
+    _base_endpoint = "go"
+    endpoints = {
+        "details": "Gets basic information about a GO term.",
+        "locus_details": "Gets a list of genes annotated to a GO term.",
+    }
+
     def __init__(self, go_id, **kwargs):
-        super().__init__(**kwargs)
         # Convert simple numeric ID to GO ID if needed
-        self.go_id = self.id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
-        self.base_endpoint = self.__class__.__name__
+        self.go_id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
+        super().__init__(self.go_id, **kwargs)
 
     @property
     def details(self):
@@ -216,4 +232,4 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO locus details.
         """
-        return self.get_endpoint_response(addl_endpoint=inspect.currentframe().f_code.co_name)
+        return self.get_endpoint_response(addl_endpoint="locus_details")

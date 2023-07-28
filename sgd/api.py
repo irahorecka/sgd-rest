@@ -13,25 +13,31 @@ from sgd.exceptions import InvalidGene
 
 class BaseAPI:
     _base_endpoint = ""
+    _endpoint = ""
     endpoints = {}
 
     def __init__(self, id, **kwargs):
         self._id = id
         self._kwargs = kwargs
 
-    @lru_cache(maxsize=64)
-    def get_endpoint_response(self, addl_endpoint=None):
-        """Gets response for an endpoint.
+    @property
+    def url(self):
+        """Gets URL for an endpoint.
 
-        Args:
-            addl_endpoint (str | None, optional): Additional endpoint to append to URL.
+        Returns:
+            str: Endpoint URL.
+        """
+        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, self._endpoint)))
+        return f"https://www.yeastgenome.org/backend/{endpoint}"
+
+    @lru_cache(maxsize=64)
+    def _get_endpoint_response(self):
+        """Gets response for an endpoint.
 
         Returns:
             requests.models.Response: Endpoint response.
         """
-        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, addl_endpoint)))
-        url = f"https://www.yeastgenome.org/backend/{endpoint}"
-        response = requests.get(url, **self._kwargs)
+        response = requests.get(self.url, **self._kwargs)
         response.raise_for_status()
         return response
 
@@ -65,7 +71,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus details.
         """
-        return self.get_endpoint_response()
+        self._endpoint = ""
+        return self._get_endpoint_response()
 
     @property
     def go_details(self):
@@ -74,7 +81,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus GO details.
         """
-        return self.get_endpoint_response(addl_endpoint="go_details")
+        self._endpoint = "go_details"
+        return self._get_endpoint_response()
 
     @property
     def interaction_details(self):
@@ -83,7 +91,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus interaction details.
         """
-        return self.get_endpoint_response(addl_endpoint="interaction_details")
+        self._endpoint = "interaction_details"
+        return self._get_endpoint_response()
 
     @property
     def literature_details(self):
@@ -92,7 +101,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus literature details.
         """
-        return self.get_endpoint_response(addl_endpoint="literature_details")
+        self._endpoint = "literature_details"
+        return self._get_endpoint_response()
 
     @property
     def neighbor_sequence_details(self):
@@ -101,7 +111,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus neighbor sequence details.
         """
-        return self.get_endpoint_response(addl_endpoint="neighbor_sequence_details")
+        self._endpoint = "neighbor_sequence_details"
+        return self._get_endpoint_response()
 
     @property
     def phenotype_details(self):
@@ -110,7 +121,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus phenotype details.
         """
-        return self.get_endpoint_response(addl_endpoint="phenotype_details")
+        self._endpoint = "phenotype_details"
+        return self._get_endpoint_response()
 
     @property
     def posttranslational_details(self):
@@ -119,7 +131,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus posttranslational details.
         """
-        return self.get_endpoint_response(addl_endpoint="posttranslational_details")
+        self._endpoint = "posttranslational_details"
+        return self._get_endpoint_response()
 
     @property
     def protein_domain_details(self):
@@ -128,7 +141,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein domain details.
         """
-        return self.get_endpoint_response(addl_endpoint="protein_domain_details")
+        self._endpoint = "protein_domain_details"
+        return self._get_endpoint_response()
 
     @property
     def protein_experiment_details(self):
@@ -137,7 +151,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein experiment details.
         """
-        return self.get_endpoint_response(addl_endpoint="protein_experiment_details")
+        self._endpoint = "protein_experiment_details"
+        return self._get_endpoint_response()
 
     @property
     def regulation_details(self):
@@ -146,7 +161,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus regulation details.
         """
-        return self.get_endpoint_response(addl_endpoint="regulation_details")
+        self._endpoint = "regulation_details"
+        return self._get_endpoint_response()
 
     @property
     def sequence_details(self):
@@ -155,7 +171,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus sequence details.
         """
-        return self.get_endpoint_response(addl_endpoint="sequence_details")
+        self._endpoint = "sequence_details"
+        return self._get_endpoint_response()
 
 
 class gene(locus):
@@ -190,7 +207,8 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype details.
         """
-        return self.get_endpoint_response()
+        self._endpoint = ""
+        return self._get_endpoint_response()
 
     @property
     def locus_details(self):
@@ -199,7 +217,8 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype locus details.
         """
-        return self.get_endpoint_response(addl_endpoint="locus_details")
+        self._endpoint = "locus_details"
+        return self._get_endpoint_response()
 
 
 class go(BaseAPI):
@@ -223,7 +242,8 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO details.
         """
-        return self.get_endpoint_response()
+        self._endpoint = ""
+        return self._get_endpoint_response()
 
     @property
     def locus_details(self):
@@ -232,4 +252,5 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO locus details.
         """
-        return self.get_endpoint_response(addl_endpoint="locus_details")
+        self._endpoint = "locus_details"
+        return self._get_endpoint_response()

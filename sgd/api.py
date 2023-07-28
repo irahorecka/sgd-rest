@@ -12,6 +12,7 @@ from sgd.exceptions import InvalidGene
 
 
 class BaseAPI:
+    """Base API for SGD REST."""
     _base_endpoint = ""
     _endpoint = ""
     endpoints = {}
@@ -37,7 +38,7 @@ class BaseAPI:
         Returns:
             requests.models.Response: Endpoint response.
         """
-        response = requests.get(self.url, **self._kwargs)
+        response = requests.get(self.url, **self._kwargs, timeout=60)
         response.raise_for_status()
         return response
 
@@ -231,8 +232,7 @@ class go(BaseAPI):
     }
 
     def __init__(self, go_id, **kwargs):
-        # Convert simple numeric ID to GO ID if needed
-        self.go_id = f"GO:{go_id}" if go_id.isdigit() else go_id.upper()
+        self.go_id = go_id.upper()
         super().__init__(self.go_id, **kwargs)
 
     @property

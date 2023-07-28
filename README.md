@@ -1,6 +1,6 @@
 # sgd-rest
 
-Saccharomyces Genome Database ([SGD](https://www.yeastgenome.org/)) REST API wrapper. Visit the [SGD REST](https://www.yeastgenome.org/api/doc) page for information regarding API use and terms of service.
+Saccharomyces Genome Database ([SGD](https://www.yeastgenome.org/)) REST API wrapper. Refer to the [SGD REST](https://www.yeastgenome.org/api/doc) page for information about API usage and terms of service.
 
 ## Installation
 
@@ -15,21 +15,22 @@ Get GO (gene ontology) information for gene ARO1.
 ```python
 import sgd
 
-aro1 = sgd.gene('ARO1')
+aro1 = sgd.gene("ARO1")
 aro1.go_details.json()
 ```
 
 ## Background
+
 Navigate the SGD REST API with Python.
 
 ### Classes
 
-| Class | Description |
-| ----- | ----------- |
-| `locus` | Query SGD REST using locus ID. |
-| `gene` | Query SGD REST using gene name. |
-| `phenotype` | Query SGD REST using phenotype name. |
-| `go` | Query SGD REST using GO ID. |
+| Class | Description | Example |
+| ----- | ----------- | ------- |
+| `locus` | Query SGD REST using locus ID. | `locus("S000002534")` |
+| `gene` | Query SGD REST using gene name. | `gene("ARO1")` |
+| `phenotype` | Query SGD REST using phenotype name. | `phenotype("increased_chemical_compound_accumulation")` |
+| `go` | Query SGD REST using GO ID. | `go("GO:0000001")` |
 
 First, instantiate an SGD class prior to working with subclasses:
 
@@ -86,7 +87,7 @@ Just like a subclass returns a `requests.models.Response` instance, the user can
 ```python
 import sgd
 
-go_0000001 = sgd.go('GO:0000001', headers={"Cache-Control": "no-cache", "Pragma": "no-cache"})
+go_0000001 = sgd.go("GO:0000001", headers={"Cache-Control": "no-cache", "Pragma": "no-cache"})
 go_0000001.locus_details.text
 ```
 
@@ -98,7 +99,7 @@ go_0000001.locus_details.text
 ```python
 import sgd
 
-tor2 = sgd.locus('TOR2')
+tor2 = sgd.locus("TOR2")
 
 # 1 
 print(tor2.url)
@@ -118,7 +119,7 @@ import sgd
 from sgd.exceptions import InvalidGene
 
 try:
-    bad_gene = sgd.gene('BadGene')
+    bad_gene = sgd.gene("BadGene")
 except InvalidGene:
     print("Whoops, an invalid gene was queried.")
 ```

@@ -42,7 +42,7 @@ aro1 = sgd.gene("ARO1")
 
 ### Subclasses
 
-Use the `endpoints` attribute to query a class's subclass(es):
+Use the `endpoints` attribute to query a class's subclasses:
 
 ```python
 import sgd
@@ -93,8 +93,8 @@ go_0000001.locus_details.text
 
 ## Additional attributes
 
-* `url`: Gets endpoint's URL. Available for all classes.
-* `locus_id`: Gets endpoint's locus ID. Avaialble for `locus` and `gene` classes.
+* `url`: Gets the endpoint's URL. Available for all classes.
+* `locus_id`: Gets the endpoint's locus ID. Avaialble for `locus` and `gene` classes.
 
 ```python
 import sgd

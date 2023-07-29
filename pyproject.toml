@@ -3,7 +3,7 @@ requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
-module = "sgd-rest"
+module = "sgd"
 dist-name = "sgd-rest"
 author = "Ira Horecka"
 author-email = "ira89@icloud.com"

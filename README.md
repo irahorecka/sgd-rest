@@ -104,7 +104,7 @@ go_0000001.locus_details.text
 ```python
 import sgd
 
-tor2 = sgd.locus("TOR2")
+tor2 = sgd.gene("TOR2")
 
 # 1 
 print(tor2.url)

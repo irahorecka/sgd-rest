@@ -13,7 +13,8 @@ from sgd.constants import GENES_TO_LOCI
 sgd_instances = (
     sgd.locus('S000002534'),
     sgd.gene('ARO1'),
-    sgd.phenotype('increased_chemical_compound_accumulation'), sgd.go('GO:0000001'),
+    sgd.phenotype('increased_chemical_compound_accumulation'),
+    sgd.go('GO:0000001'),
 )
 # fmt: on
 @mark.parametrize("instance", sgd_instances)

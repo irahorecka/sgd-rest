@@ -6,4 +6,4 @@ sgd
 from sgd import exceptions
 from sgd.api import gene, go, locus, phenotype
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"

@@ -47,7 +47,7 @@ aro1 = sgd.gene("ARO1")
 
 ### Subclasses
 
-Use the `endpoints` attribute to query a class's subclasses:
+Use the `endpoints` attribute to search a class's subclasses:
 
 ```python
 import sgd
@@ -73,16 +73,16 @@ print(sgd.gene.endpoints)
 | `go` | `details` | Gets basic information about a GO term.
 | `go` | `locus_details` | Gets a list of genes annotated to a GO term.
 
-Use a subclass to retrieve the endpoint's response. This library utilizes the [`requests`](https://github.com/psf/requests) library, returning a `requests.models.Response` instance by default. Use this instance to define the desired processing of the REST API content.
+Use a subclass to retrieve the endpoint's response. This library utilizes the [`requests`](https://github.com/psf/requests) library, returning a `requests.models.Response` instance. Use this instance to define the desired processing of the REST API content.
 
-For example, get GO details and literature details for the gene ARO1 as JSON:
+For example, for the gene ARO1, get GO details as JSON and literature details as text:
 
 ```python
 import sgd
 
 aro1 = sgd.gene("ARO1")
 aro1.go_details.json()
-aro1.literature_details.json()
+aro1.literature_details.text
 ```
 
 ## Advanced
@@ -140,4 +140,4 @@ If you are having issues or would like to propose a new feature, please use the 
 
 ## License
 
-The project is licensed under the MIT license.
+This project is licensed under the MIT license.

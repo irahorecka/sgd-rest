@@ -39,7 +39,7 @@ class BaseAPI:
         Returns:
             requests.models.Response: Endpoint response.
         """
-        response = requests.get(self.url, **self._kwargs, timeout=60)
+        response = requests.get(self.url, timeout=60, **self._kwargs)
         response.raise_for_status()
         return response
 

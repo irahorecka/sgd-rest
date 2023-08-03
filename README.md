@@ -15,7 +15,7 @@ pip install sgd-rest
 
 ## Quick start
 
-Get GO (gene ontology) information for gene ARO1.
+Get GO (gene ontology) details for gene ARO1.
 
 ```python
 import sgd
@@ -26,7 +26,7 @@ aro1.go_details.json()
 
 ## Background
 
-Navigate the SGD REST API with Python.
+Easily navigate the SGD REST API with Python.
 
 ### Classes
 
@@ -47,7 +47,7 @@ aro1 = sgd.gene("ARO1")
 
 ### Subclasses
 
-Use the `endpoints` attribute to search a class's subclasses:
+Use the `endpoints` attribute to display subclasses of a class:
 
 ```python
 import sgd
@@ -73,9 +73,9 @@ print(sgd.gene.endpoints)
 | `go` | `details` | Gets basic information about a GO term.
 | `go` | `locus_details` | Gets a list of genes annotated to a GO term.
 
-Use a subclass to retrieve the endpoint's response. This library utilizes the [`requests`](https://github.com/psf/requests) library, returning a `requests.models.Response` instance. Use this instance to define the desired processing of the REST API content.
+Use a subclass to retrieve the endpoint's response. This library utilizes the [`requests`](https://github.com/psf/requests) library, returning a `requests.models.Response` instance. Use this instance to define how the REST API content should be processed.
 
-For example, for the gene ARO1, get GO details as JSON and literature details as text:
+For example, for gene ARO1, get GO details as JSON and literature details as text:
 
 ```python
 import sgd

@@ -3,11 +3,8 @@ black: ## Black format every python file to line length 100
 	find . -type f -name "*.py" | xargs absolufy-imports;
 	make clean;
 
-github-test: ## Run pytest for every test file in GitHub Actions
-	pytest -W ignore -vv .;
-
 test: ## Run pytest for every test file
-	make github-test;
+	pytest -W ignore -vv .;
 	make clean;
 
 flake8: ## Flake8 every python file

@@ -4,6 +4,8 @@
   <img src="https://cherrylab.stanford.edu/sites/g/files/sbiybj20496/files/styles/card_1900x950/public/media/image/sgd-banner-higher_res_0.png?h=df51affa&itok=nL1UBLZG)" width="50%" />
 </p>
 
+<br>
+
 Saccharomyces Genome Database ([SGD](https://www.yeastgenome.org/)) REST API wrapper. Refer to the [SGD REST](https://www.yeastgenome.org/api/doc) page for information about API usage and terms of service.
 
 [![pypiv](https://img.shields.io/pypi/v/sgd-rest.svg)](https://pypi.python.org/pypi/sgd-rest)

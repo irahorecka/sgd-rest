@@ -45,7 +45,7 @@ Easily navigate the SGD REST API with Python.
 | `phenotype` | Query SGD REST using phenotype name. | `phenotype("increased_chemical_compound_accumulation")` |
 | `go` | Query SGD REST using GO ID. | `go("GO:0000001")` |
 
-First, instantiate an SGD class prior to working with subclasses:
+Instantiate the SGD class prior to working with subclasses:
 
 ```python
 import sgd

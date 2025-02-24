@@ -29,7 +29,7 @@ import sgd
 aro1 = sgd.gene("ARO1")
 aro1.go_details.json()
 
-# >>> [{'id': 9761727, 'annotation_type': 'computational', 'date_created': '2024-10-14', 'qualifier': 'enables', 'locus': {'display_name': 'ARO1', 'link': '/locus/S000002534', 'id': 1284912, 'format_name': 'YDR127W'}, 'go': {'display_name': 'lyase activity', 'link': '/go/GO:0016829', 'go_id': 'GO:0016829', 'go_aspect': 'molecular function', 'id': 291052}, [...]]
+# >>> [{'id': 9761727, 'annotation_type': 'computational', 'date_created': '2024-10-14', 'qualifier': 'enables', 'locus': {'display_name': 'ARO1', 'link': '/locus/S000002534', 'id': 1284912, 'format_name': 'YDR127W'}, 'go': {'display_name': 'lyase activity', 'link': '/go/GO:0016829', 'go_id': 'GO:0016829', 'go_aspect': 'molecular function', 'id': 291052}, ...]
 ```
 
 ## Background

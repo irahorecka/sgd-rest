@@ -16,7 +16,7 @@ Saccharomyces Genome Database ([SGD](https://www.yeastgenome.org/)) REST API wra
 ## Installation
 
 ```bash
-pip install sgd-rest
+pip install sgd-rest --upgrade
 ```
 
 ## Quick start

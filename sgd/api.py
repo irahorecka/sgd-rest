@@ -15,31 +15,36 @@ class BaseAPI:
     """Base API for SGD REST."""
 
     _base_endpoint = ""
-    _endpoint = ""
+    # This class attribute is publically accessible
     endpoints = {}
 
     def __init__(self, id, **kwargs):
-        self._id = id
-        self._kwargs = kwargs
+        self.id = id
+        self.endpoint = ""
+        # Initialize base URL, which will remain as a constant
+        self.url = self.build_url()
+        self.kwargs = kwargs
 
-    @property
-    def url(self):
-        """Gets URL for an endpoint.
+    def build_url(self):
+        """Builds endpoint URL.
 
         Returns:
             str: Endpoint URL.
         """
-        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self._id, self._endpoint)))
+        endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self.id, self.endpoint)))
         return f"https://www.yeastgenome.org/backend/{endpoint}"
 
     @lru_cache(maxsize=64)
-    def _get_endpoint_response(self):
+    def get_endpoint_response(self, url):
         """Gets response for an endpoint.
+
+        Args:
+            url (str): Endpoint URL. This argument is only used for caching purposes.
 
         Returns:
             requests.models.Response: Endpoint response.
         """
-        response = requests.get(self.url, timeout=60, **self._kwargs)
+        response = requests.get(url, timeout=60, **self.kwargs)
         response.raise_for_status()
         return response
 
@@ -73,8 +78,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus details.
         """
-        self._endpoint = ""
-        return self._get_endpoint_response()
+        self.endpoint = ""
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def go_details(self):
@@ -83,8 +88,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus GO details.
         """
-        self._endpoint = "go_details"
-        return self._get_endpoint_response()
+        self.endpoint = "go_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def interaction_details(self):
@@ -93,8 +98,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus interaction details.
         """
-        self._endpoint = "interaction_details"
-        return self._get_endpoint_response()
+        self.endpoint = "interaction_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def literature_details(self):
@@ -103,8 +108,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus literature details.
         """
-        self._endpoint = "literature_details"
-        return self._get_endpoint_response()
+        self.endpoint = "literature_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def neighbor_sequence_details(self):
@@ -113,8 +118,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus neighbor sequence details.
         """
-        self._endpoint = "neighbor_sequence_details"
-        return self._get_endpoint_response()
+        self.endpoint = "neighbor_sequence_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def phenotype_details(self):
@@ -123,8 +128,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus phenotype details.
         """
-        self._endpoint = "phenotype_details"
-        return self._get_endpoint_response()
+        self.endpoint = "phenotype_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def posttranslational_details(self):
@@ -133,8 +138,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus posttranslational details.
         """
-        self._endpoint = "posttranslational_details"
-        return self._get_endpoint_response()
+        self.endpoint = "posttranslational_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def protein_domain_details(self):
@@ -143,8 +148,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein domain details.
         """
-        self._endpoint = "protein_domain_details"
-        return self._get_endpoint_response()
+        self.endpoint = "protein_domain_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def protein_experiment_details(self):
@@ -153,8 +158,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus protein experiment details.
         """
-        self._endpoint = "protein_experiment_details"
-        return self._get_endpoint_response()
+        self.endpoint = "protein_experiment_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def regulation_details(self):
@@ -163,8 +168,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus regulation details.
         """
-        self._endpoint = "regulation_details"
-        return self._get_endpoint_response()
+        self.endpoint = "regulation_details"
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def sequence_details(self):
@@ -173,8 +178,8 @@ class locus(BaseAPI):
         Returns:
             requests.models.Response: Locus sequence details.
         """
-        self._endpoint = "sequence_details"
-        return self._get_endpoint_response()
+        self.endpoint = "sequence_details"
+        return self.get_endpoint_response(self.build_url())
 
 
 class gene(locus):
@@ -209,8 +214,8 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype details.
         """
-        self._endpoint = ""
-        return self._get_endpoint_response()
+        self.endpoint = ""
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def locus_details(self):
@@ -219,8 +224,8 @@ class phenotype(BaseAPI):
         Returns:
             requests.models.Response: Phenotype locus details.
         """
-        self._endpoint = "locus_details"
-        return self._get_endpoint_response()
+        self.endpoint = "locus_details"
+        return self.get_endpoint_response(self.build_url())
 
 
 class go(BaseAPI):
@@ -243,8 +248,8 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO details.
         """
-        self._endpoint = ""
-        return self._get_endpoint_response()
+        self.endpoint = ""
+        return self.get_endpoint_response(self.build_url())
 
     @property
     def locus_details(self):
@@ -253,5 +258,5 @@ class go(BaseAPI):
         Returns:
             requests.models.Response: GO locus details.
         """
-        self._endpoint = "locus_details"
-        return self._get_endpoint_response()
+        self.endpoint = "locus_details"
+        return self.get_endpoint_response(self.build_url())

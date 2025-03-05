@@ -34,7 +34,7 @@ class BaseAPI:
         endpoint = "/".join(filter(lambda x: x, (self._base_endpoint, self.id, self.endpoint)))
         return f"https://www.yeastgenome.org/backend/{endpoint}"
 
-    @lru_cache(maxsize=64)
+    @lru_cache(maxsize=128)
     def get_endpoint_response(self, url):
         """Gets response for an endpoint.
 

@@ -8,10 +8,10 @@
 
 Saccharomyces Genome Database ([SGD](https://www.yeastgenome.org/)) REST API wrapper. Refer to the [SGD REST](https://www.yeastgenome.org/api/doc) page for information about API usage and terms of service.
 
-[![pypiv](https://img.shields.io/pypi/v/sgd-rest.svg)](https://pypi.python.org/pypi/sgd-rest)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![tests](https://github.com/irahorecka/sgd-rest/workflows/tests/badge.svg)](https://github.com/irahorecka/sgd-rest/actions)
+[![pypiv](https://img.shields.io/pypi/v/sgd-rest.svg)](https://pypi.python.org/pypi/sgd-rest)
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/irahorecka/sgd-rest/main/LICENSE)
+[![tests](https://github.com/irahorecka/sgd-rest/workflows/tests/badge.svg)](https://github.com/irahorecka/sgd-rest/actions)
 
 ## Installation
 

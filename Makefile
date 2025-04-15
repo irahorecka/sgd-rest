@@ -14,11 +14,11 @@ pylint: ## Pylint every python file
 	find . -type f -name "*.py" -a | xargs pylint;
 
 build: ## Build package distribution files
-	flit build;
+	python -m build
 
-publish: ## Publish package distribution files to pypi
-	flit publish;
-	make clean;
+publish: ## Publish package distribution files to PyPI
+	twine upload dist/*
+	make clean
 
 clean: ## Remove caches, checkpoints, and distribution artifacts
 	find . \( -name ".DS_Store" -o -name ".ipynb_checkpoints" -o -name "__pycache__" -o -name ".pytest_cache" \) | xargs rm -rf

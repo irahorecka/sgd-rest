@@ -1,14 +1,18 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
 
-[tool.flit.metadata]
-module = "sgd"
-dist-name = "sgd-rest"
-author = "Ira Horecka"
-author-email = "ira89@icloud.com"
-home-page = "https://github.com/irahorecka/sgd-rest"
-description-file = "README.md"
+[project]
+name = "sgd-rest"
+dynamic = ["version"]
+description = "Saccharomyces Genome Database (SGD) REST API wrapper"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Ira Horecka", email = "ira89@icloud.com" }]
+license = { text = "MIT" }
+dependencies = [
+    "requests>=2.28.0"
+]
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -19,7 +23,15 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
-    "Topic :: Utilities",
+    "Topic :: Utilities"
 ]
-requires-python = ">=3.8"
-requires = ["requests>=2.28.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["sgd"]
+
+[tool.setuptools.dynamic]
+version = { attr = "sgd.__version__" }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

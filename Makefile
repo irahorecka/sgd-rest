@@ -1,17 +1,18 @@
 black: ## Black format every python file to line length 100
-	find . -type f -name "*.py" | xargs black --line-length=100;
-	find . -type f -name "*.py" | xargs absolufy-imports;
-	make clean;
+	find . -type f -name "*.py" | xargs black --line-length=100
+	find . -type f -name "*.py" | xargs absolufy-imports
+	make clean
 
 test: ## Run pytest for every test file
-	pytest -W ignore -vv .;
-	make clean;
+	pip install -e . > /dev/null
+	pytest -W ignore -vv .
+	make clean
 
 flake8: ## Flake8 every python file
-	find . -type f -name "*.py" -a | xargs flake8;
+	find . -type f -name "*.py" -a | xargs flake8
 
 pylint: ## Pylint every python file
-	find . -type f -name "*.py" -a | xargs pylint;
+	find . -type f -name "*.py" -a | xargs pylint
 
 build: ## Build package distribution files
 	python -m build

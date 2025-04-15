@@ -20,7 +20,6 @@ publish: ## Publish package distribution files to pypi
 	flit publish;
 	make clean;
 
-clean: ## Remove package distribution files, caches, and .DS_Store
-	rm -rf ./sgd.egg-info ./dist ./build;
-	find . -type d -name "__pycache__" -o -name ".pytest_cache" | xargs rm -r;
-	find . -type f -name ".DS_Store" | xargs rm -r;
+clean: ## Remove caches, checkpoints, and distribution artifacts
+	find . \( -name ".DS_Store" -o -name ".ipynb_checkpoints" -o -name "__pycache__" -o -name ".pytest_cache" \) | xargs rm -rf
+	rm -rf dist/ build/ **/*.egg-info

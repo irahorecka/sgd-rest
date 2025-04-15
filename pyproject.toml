@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 authors = [{ name = "Ira Horecka", email = "ira89@icloud.com" }]
 license = { text = "MIT" }
+license-files = ["LICENSE"]
 dependencies = [
     "requests>=2.28.0"
 ]

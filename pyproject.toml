@@ -32,7 +32,9 @@ text = "MIT"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["sgd"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.dynamic]
 version = { attr = "sgd.__version__" }

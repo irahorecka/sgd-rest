@@ -1,1 +1,1 @@
-recursive-include src/comics *.json
+recursive-include src/sgd *.json
